@@ -10,7 +10,6 @@ import domain.User;
 import enums.MovementType;
 import enums.ReportReason;
 import enums.SaleType;
-import domain.Complaint;
 import domain.ComplaintContainer;
 import domain.Movement;
 import domain.MovementContainer;
