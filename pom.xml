@@ -50,7 +50,7 @@
 		<sonar.organization>AimarJon</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.projectKey>AimarJon_Market26_SI2</sonar.projectKey>
-		<sonar.login>0f248a02b7a281aaa48564980697f5a99f323a90</sonar.login>
+		<sonar.token>0f248a02b7a281aaa48564980697f5a99f323a90</sonar.token>
 	</properties>
 
 	<!-- https://mvnrepository.com/artifact/junit/junit -->
