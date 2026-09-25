@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.WindowConstants;
 
 import configuration.ConfigXML;
 
@@ -42,7 +43,7 @@ public class ObjectdbManagerServer extends JDialog {
 			
 			
 			ObjectdbManagerServer dialog = new ObjectdbManagerServer();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
