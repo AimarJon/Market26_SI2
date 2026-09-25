@@ -60,9 +60,7 @@ public interface BLFacade  {
 	 * 
 	 * @param desc the text to search
 	 * @return collection of sales that contain desc 
-	 */
-	//@WebMethod public List<Sale> getSales(String desc);
-	
+	 */	
 	/**
 	 * 	 * This method retrieves the products that contain a desc text in a title and the publicationDate today or before
 	 * 

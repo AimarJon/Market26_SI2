@@ -153,7 +153,7 @@ public class QuerySaleGUI extends JFrame {
 					int row = table.rowAtPoint(point);
 					Sale s=(Sale) tableModelProducts.getValueAt(row, 3);
 					System.out.println(currentUserMail);
-					if(currentUserMail == "") {
+					if(currentUserMail.equals("")) {
 						new ShowSaleGUInonReg(s);
 					}else {
 						switch(saleType){
