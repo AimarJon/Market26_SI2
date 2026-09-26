@@ -50,12 +50,12 @@ public class BLFacadeImplementation  implements BLFacade {
 	
     private static final Logger logger = LoggerFactory.getLogger(BLFacadeImplementation.class);
 	
-	private static final int baseSize = 160;
+	private static final int BASE_SIZE = 160;
 
-	private static final String basePath="src/main/resources/images/";
+	private static final String BASE_PATH="src/main/resources/images/";
 	DataAccess dbManager;
 
-	public BLFacadeImplementation()  {		
+	public BLFacadeImplementation()  {
 		System.out.println("Creating BLFacadeImplementation instance");
 		dbManager=new DataAccess();		
 	}
@@ -234,7 +234,7 @@ public class BLFacadeImplementation  implements BLFacade {
 	 * {@inheritDoc}
 	 */
 	@WebMethod public Image downloadImage(String imageName) {
-		File image = new File(basePath+imageName);
+		File image = new File(BASE_PATH+imageName);
 		try {
 			return ImageIO.read(image);
 		} catch (IOException e) {
