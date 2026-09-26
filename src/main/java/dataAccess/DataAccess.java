@@ -48,6 +48,8 @@ public class DataAccess  {
 	private static final String basePath="src/main/resources/images/";
 
     private static final Logger logger = LoggerFactory.getLogger(DataAccess.class);
+    
+    private static final String RESOURCE_BUNDLE_NAME = "Etiquetas";
 
 
 	ConfigXML c=ConfigXML.getInstance();
@@ -154,17 +156,17 @@ public class DataAccess  {
 
 
 			if(pubDate.before(UtilDate.trim(new Date()))) {
-				throw new MustBeLaterThanTodayException(ResourceBundle.getBundle("Etiquetas").getString("DataAccess.ErrorSaleMustBeLaterThanToday"));
+				throw new MustBeLaterThanTodayException(ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME).getString("DataAccess.ErrorSaleMustBeLaterThanToday"));
 			}
 			if (file==null)
-				throw new FileNotUploadedException(ResourceBundle.getBundle("Etiquetas").getString("DataAccess.ErrorFileNotUploadedException"));
+				throw new FileNotUploadedException(ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME).getString("DataAccess.ErrorFileNotUploadedException"));
 
 			db.getTransaction().begin();
 
 			Registered seller = db.find(Registered.class, sellerEmail);
 			if (seller.doesSaleExist(title)) {
 				db.getTransaction().commit();
-				throw new SaleAlreadyExistException(ResourceBundle.getBundle("Etiquetas").getString("DataAccess.SaleAlreadyExist"));
+				throw new SaleAlreadyExistException(ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME).getString("DataAccess.SaleAlreadyExist"));
 			}
 
 			Sale sale = seller.addSale(title, description, status, price, pubDate, file);

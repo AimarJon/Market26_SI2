@@ -11,6 +11,9 @@ public class CreateRequestGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final String RESOURCE_BUNDLE_NAME = "Etiquetas";
+
+
 	private String mail;
 	private JFrame thisFrame;
 
@@ -18,19 +21,21 @@ public class CreateRequestGUI extends JFrame {
 	private JTextField fieldDescription = new JTextField();
 	private JTextField fieldPrice = new JTextField();
 
-	private JLabel jLabelTitle = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("CreateRequestGUI.Title"));
-	private JLabel jLabelDescription = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("CreateRequestGUI.Description"));
-	private JLabel jLabelPrice = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("CreateRequestGUI.Price"));
+	private JLabel jLabelTitle = new JLabel(ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME).getString("CreateRequestGUI.Title"));
+	private JLabel jLabelDescription = new JLabel(ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME).getString("CreateRequestGUI.Description"));
+	private JLabel jLabelPrice = new JLabel(ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME).getString("CreateRequestGUI.Price"));
 	private JLabel jLabelMsg = new JLabel();
 
-	private JButton jButtonCreate = new JButton(ResourceBundle.getBundle("Etiquetas").getString("CreateRequestGUI.CreateRequest"));
-	private JButton jButtonClose = new JButton(ResourceBundle.getBundle("Etiquetas").getString("Close"));
+	private JButton jButtonCreate = new JButton(ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME).getString("CreateRequestGUI.CreateRequest"));
+	private JButton jButtonClose = new JButton(ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME).getString("Close"));
+	
+
 	
 	public CreateRequestGUI(String mail) {
 		thisFrame = this;
 		this.mail = mail;
 
-		this.setTitle(ResourceBundle.getBundle("Etiquetas").getString("CreateRequestGUI.CreateRequest"));
+		this.setTitle(ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME).getString("CreateRequestGUI.CreateRequest"));
 		this.setSize(new Dimension(470, 320));
 		this.setLocationRelativeTo(null);
 		this.getContentPane().setLayout(null);
@@ -97,14 +102,14 @@ public class CreateRequestGUI extends JFrame {
         if (fieldTitle.getText().trim().isEmpty() ||
             fieldDescription.getText().trim().isEmpty() ||
             fieldPrice.getText().trim().isEmpty()) {
-            return ResourceBundle.getBundle("Etiquetas").getString("CreateRequestGUI.ErrorQuery");
+            return ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME).getString("CreateRequestGUI.ErrorQuery");
         }
         try {
             double price = Double.parseDouble(fieldPrice.getText().replace(',', '.'));
             if (price <= 0)
-                return ResourceBundle.getBundle("Etiquetas").getString("CreateRequestGUI.PriceMustBeGreaterThan0");
+                return ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME).getString("CreateRequestGUI.PriceMustBeGreaterThan0");
         } catch (NumberFormatException e) {
-            return ResourceBundle.getBundle("Etiquetas").getString("CreateRequestGUI.ErrorNumber");
+            return ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME).getString("CreateRequestGUI.ErrorNumber");
         }
         return null;
     }
