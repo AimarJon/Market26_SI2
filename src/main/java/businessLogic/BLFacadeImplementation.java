@@ -38,12 +38,18 @@ import java.awt.Image;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * It implements the business logic as a web service.
  */
 @WebService(endpointInterface = "businessLogic.BLFacade")
 public class BLFacadeImplementation  implements BLFacade {
+	
+    private static final Logger logger = LoggerFactory.getLogger(BLFacadeImplementation.class);
+	
 	private static final int baseSize = 160;
 
 	private static final String basePath="src/main/resources/images/";
@@ -232,7 +238,7 @@ public class BLFacadeImplementation  implements BLFacade {
 		try {
 			return ImageIO.read(image);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("context", e);
 		}
 		return null;
 	}
