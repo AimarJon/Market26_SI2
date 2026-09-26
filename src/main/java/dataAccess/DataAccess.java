@@ -19,6 +19,10 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import businessLogic.BLFacadeImplementation;
 import configuration.ConfigXML;
 import configuration.UtilDate;
 import enums.MovementType;
@@ -43,6 +47,7 @@ public class DataAccess  {
 
 	private static final String basePath="src/main/resources/images/";
 
+    private static final Logger logger = LoggerFactory.getLogger(DataAccess.class);
 
 
 	ConfigXML c=ConfigXML.getInstance();
@@ -124,7 +129,7 @@ public class DataAccess  {
 			System.out.println("Db initialized");
 		}
 		catch (Exception e){
-			e.printStackTrace();
+			logger.error("context: ", e);
 		}
 	}
 
