@@ -55,64 +55,8 @@ public class TestDataAccess {
 		db.close();
 		System.out.println("TestDataAccess closed");
 	}
-/*	
-
-	public boolean removeSeller(String email) {
-		System.out.println(">> TestDataAccess: removeSeller");
-		Seller d = db.find(Seller.class, email);
-		if (d!=null) {
-			db.getTransaction().begin();
-			db.remove(d);
-			db.getTransaction().commit();
-			return true;
-		} else 
-			return false;
-	}
-	public Seller createSeller(String email, String name) {
-		System.out.println(">> TestDataAccess: addSeller");
-		Seller seller=null;
-		db.getTransaction().begin();
-		try {
-			seller=new Seller(email,name);
-			db.persist(seller);
-			db.getTransaction().commit();
-		}
-		catch (Exception e){
-			e.printStackTrace();
-		}
-		return seller;
-	}
-	public boolean existSeller(String email) {
-		return  db.find(Seller.class, email)!=null;
-
-
-	}
 
 	
-
-	public boolean existSale(String sellerEmail, String title) {
-		System.out.println(">> TestDataAccess: existSale");
-		Seller s = db.find(Seller.class, sellerEmail);
-		if (s!=null) {
-			return s.doesSaleExists(title);
-		} else 
-			return false;
-	}
-
-	public Sale removeSale(String sellerEmail, String name, String description, Date date ) {
-		System.out.println(">> TestDataAccess: removeRide");
-		Seller s = db.find(Seller.class, sellerEmail);
-		if (s!=null) {
-			db.getTransaction().begin();
-			Sale sale= s.removeSale(name, description);
-			db.getTransaction().commit();
-			return sale;
-
-		} else 
-			return null;
-
-	} */
-
 	public Registered addRegistered(String email, String name, String password, double initialBalance) {
 		System.out.println(">> TestDataAccess: addRegistered");
 		Registered reg = null;
