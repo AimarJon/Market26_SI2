@@ -88,28 +88,7 @@ public class TestDataAccess {
 
 	}
 
-	public Seller addSellerWithSale(String email, String sellerName, String title, String description, int status, float price,  Date pubDate, File file) {
-		System.out.println(">> TestDataAccess: addSellerWithSale");
-		Seller seller=null;
-		db.getTransaction().begin();
-		try {
-			seller = db.find(Seller.class, email);
-			if (seller==null) {
-				seller=new Seller(email, sellerName);
-				db.persist(seller);
-			}
-			seller.addSale(title, description, status, price, pubDate, file);
-			db.getTransaction().commit();
-			System.out.println("Seller created "+seller);
-
-			return seller;
-
-		}
-		catch (Exception e){
-			e.printStackTrace();
-		}
-		return null;
-	}
+	
 
 	public boolean existSale(String sellerEmail, String title) {
 		System.out.println(">> TestDataAccess: existSale");
@@ -141,7 +120,6 @@ public class TestDataAccess {
 		try {
 			reg = db.find(Registered.class, email);
 			if (reg == null) {
-				// Ajusta los parámetros del constructor si la clase Registered difiere
 				reg = new Registered(email, name, password);
 				reg.setBalance(initialBalance);
 				db.persist(reg);
@@ -170,11 +148,64 @@ public class TestDataAccess {
 		}
 		return false;
 	}
+	
+	public boolean removeSale(int saleNumber) {
+		System.out.println(">> TestDataAccess: removeSale");
+		Sale sale = db.find(Sale.class, saleNumber);
+		if (sale != null) {
+			db.getTransaction().begin();
+			db.remove(sale);
+			db.getTransaction().commit();
+			return true;
+		}
+		return false;
+	}
 
 	public boolean existRegistered(String email) {
 		System.out.println(">> TestDataAccess: existRegistered");
 		return db.find(Registered.class, email) != null;
 	}
+	
+	public Sale addSaleToRegistered(String email, String title, String description, int status, float price, Date pubDate, File file) {
+		System.out.println(">> TestDataAccess: addSaleToRegistered");
+		Sale sale = null;
+		db.getTransaction().begin();
+		try {
+			Registered reg = db.find(Registered.class, email);
+			if (reg != null) {
+				sale = reg.addSale(title, description, status, price, pubDate, file);
+			}
+			db.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (db.getTransaction().isActive()) db.getTransaction().rollback();
+		}
+		return sale;
+	}
+	
+	public void addToWishList(String email, int saleNumber) {
+		System.out.println(">> TestDataAccess: addToWishList");
+		db.getTransaction().begin();
+		try {
+			Registered reg = db.find(Registered.class, email);
+			Sale sale = db.find(Sale.class, saleNumber);
+			if (reg != null && sale != null) {
+				reg.addToWishList(sale);
+			}
+			db.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (db.getTransaction().isActive()) db.getTransaction().rollback();
+		}
+	}
 
+	public boolean isInWishList(String email, int saleNumber) {
+		System.out.println(">> TestDataAccess: isInWishList");
+		Registered reg = db.find(Registered.class, email);
+		Sale sale = db.find(Sale.class, saleNumber);
+		if (reg == null || sale == null) return false;
+		return reg.getWishList().contains(sale);
+	}
+	
 
 }
