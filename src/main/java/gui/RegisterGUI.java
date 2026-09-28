@@ -27,7 +27,7 @@ public class RegisterGUI extends JFrame {
 	private JTextField textFieldEmail;
 	private JLabel errorLabel;
 	private static final String EMAIL_AE ="^[A-Za-z0-9+_.-]+@[A-Za-z0-9-]+\\.[A-Za-z]{2,}$";
-	private static final String PASSWORD_AE="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{5,}$";
+	private static final String PASS_VALIDATION="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{5,}$";
 
 	public RegisterGUI() {
 
@@ -161,7 +161,7 @@ public class RegisterGUI extends JFrame {
 
 	}
 	private  boolean isValidPassWord(String pass) throws PasswordNotValidException{
-		if (pass == null || pass.length()== 0 || !pass.matches(PASSWORD_AE)){
+		if (pass == null || pass.length()== 0 || !pass.matches(PASS_VALIDATION)){
 			throw new PasswordNotValidException();	
 		}
 		return true;
