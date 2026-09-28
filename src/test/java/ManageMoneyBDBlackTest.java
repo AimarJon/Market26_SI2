@@ -10,6 +10,7 @@ import org.junit.Test;
 import dataAccess.DataAccess;
 import domain.Registered;
 import enums.MovementType;
+import exceptions.NotEnoughMoneyException;
 import testOperations.TestDataAccess;
 
 public class ManageMoneyBDBlackTest {
@@ -55,7 +56,7 @@ public class ManageMoneyBDBlackTest {
 			testDA.removeRegistered(regMail);
 			testDA.close();
 		}
-	}
+	} 
 
 	@Test
 	public void test2() {
@@ -81,9 +82,33 @@ public class ManageMoneyBDBlackTest {
 			testDA.close();
 		}
 	}
-
+	
 	@Test
 	public void test3() {
+
+		testDA.open();
+		testDA.addRegistered(regMail, "user1", "123", 20);
+		testDA.close();
+		try {
+			//invoke System Under Test (sut)  
+			sut.open();
+			reg=sut.manageMoney(regMail,amount,type);
+			sut.close();			
+			//verify the results
+			fail("NotEnoughMoneyException altxatu beharko luke");
+		} catch (NotEnoughMoneyException e) {
+			assertTrue(true);
+		} catch (Exception e) {
+			fail();
+		} finally {   
+			testDA.open();
+			testDA.removeRegistered(regMail);
+			testDA.close();
+		}
+	}
+
+	@Test
+	public void test4() {
 
 		testDA.open();
 		testDA.addRegistered(regMail, "user1", "123", 50);
@@ -107,7 +132,7 @@ public class ManageMoneyBDBlackTest {
 	}
 
 	@Test
-	public void test4() {
+	public void test5() {
 
 		testDA.open();
 		testDA.addRegistered(regMail, "user1", "123", 50);
@@ -131,7 +156,7 @@ public class ManageMoneyBDBlackTest {
 	}
 
 	@Test
-	public void test5() {
+	public void test6() {
 
 		testDA.open();
 		testDA.addRegistered(regMail, "user1", "123", 50);
@@ -153,4 +178,3 @@ public class ManageMoneyBDBlackTest {
 		}
 	}
 }
-
