@@ -71,12 +71,13 @@ public class ManageMoneyBDWhiteTest {
 		testDA.addRegistered(regMail, "user1", "123", 150);
 		testDA.close();
 		try {
+			amount = 30;
 			//invoke System Under Test (sut)  
 			sut.open();
 			reg =sut.manageMoney(regMail,amount,type);
 			sut.close();
 
-			assertEquals(50, reg.getBalance(), 0.0001); // 150-100 = 50
+			assertEquals(120, reg.getBalance(), 0.0001); // 150-30 = 120
 
 		} catch (NotEnoughMoneyException e ) { 
 			// if the program goes to this point true  
