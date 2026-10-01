@@ -11,16 +11,13 @@ import enums.MovementType;
 import enums.ReportReason;
 import enums.SaleType;
 import domain.ComplaintContainer;
-import domain.Movement;
 import domain.MovementContainer;
 import domain.Offer;
 import domain.OfferContainer;
 import domain.Registered;
-import domain.Report;
 import domain.ReportContainer;
 import domain.Request;
 import domain.RequestContainer;
-import domain.Review;
 import domain.ReviewContainer;
 import exceptions.FileNotUploadedException;
 import exceptions.MustBeLaterThanTodayException;
@@ -29,10 +26,7 @@ import exceptions.SaleAlreadyExistException;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import java.awt.image.BufferedImage;
 import java.awt.Image;
-
-import gui.*;
 /**
  * Interface that specifies the business logic.
  */

@@ -4,9 +4,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -23,11 +20,11 @@ import org.mockito.MockitoAnnotations;
 
 import dataAccess.DataAccess;
 import domain.Registered;
-import domain.Sale;
+
 import enums.MovementType;
-import exceptions.MustBeLaterThanTodayException;
+
 import exceptions.NotEnoughMoneyException;
-import exceptions.SaleAlreadyExistException;
+
 
 public class ManageMoneyMockBlackTest {
 

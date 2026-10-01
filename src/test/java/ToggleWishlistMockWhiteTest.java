@@ -1,7 +1,5 @@
 import static org.junit.Assert.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
@@ -20,7 +18,6 @@ import org.mockito.MockitoAnnotations;
 import dataAccess.DataAccess;
 import domain.Registered;
 import domain.Sale;
-import testOperations.TestDataAccess;
 
 public class ToggleWishlistMockWhiteTest {
 

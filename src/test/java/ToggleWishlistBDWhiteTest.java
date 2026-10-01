@@ -6,7 +6,6 @@ import java.util.Date;
 import org.junit.*;
 
 import dataAccess.DataAccess;
-import domain.Registered;
 import domain.Sale;
 import testOperations.TestDataAccess;
 
@@ -102,7 +101,6 @@ public class ToggleWishlistBDWhiteTest {
 		testDA.close();
 
 		int saleNumber = sale.getSaleNumber();
-		Registered reg = sale.getSeller();
 		
 		testDA.open();
 		testDA.addToWishList(mail,saleNumber);

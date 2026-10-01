@@ -7,8 +7,6 @@ import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-import com.objectdb.o.CLN.p;
-
 import dataAccess.DataAccess;
 import domain.Sale;
 import domain.User;

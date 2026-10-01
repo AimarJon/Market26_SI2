@@ -45,7 +45,7 @@ public class LoginGUI extends JFrame {
 		JLabel lblUsername = new JLabel(bundle.getString("LoginGUI.Email"));
 		lblUsername.setHorizontalAlignment(SwingConstants.RIGHT);
 		textFieldUsername = new JTextField();
-		textFieldUsername.setText("seller1@gmail.com");
+		textFieldUsername.setText("seller22@gmail.com");
 
 		// PASSWORD
 		JLabel lblPassword = new JLabel(bundle.getString("LoginGUI.Password"));
