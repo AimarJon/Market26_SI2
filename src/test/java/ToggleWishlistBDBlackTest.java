@@ -91,6 +91,18 @@ public class ToggleWishlistBDBlackTest {
 
 	@Test
 	public void test3() {
+		String nullMail = null;
+		int saleNumber = 2;
+
+		sut.open();
+		boolean result = sut.toggleWishList(nullMail, saleNumber);
+		sut.close();
+
+		assertFalse(result);
+	}
+	
+	@Test
+	public void test4() {
 		String noExistingMail = "err@gmail.com";
 		int saleNumber = 2;
 
@@ -102,7 +114,7 @@ public class ToggleWishlistBDBlackTest {
 	}
 
 	@Test
-	public void test4() {
+	public void test5() {
 		testDA.open();
 		testDA.addRegistered(mail, name, password, 0);
 		testDA.close();
