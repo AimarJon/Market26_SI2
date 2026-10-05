@@ -10,7 +10,7 @@ import domain.Registered;
 import enums.MovementType;
 import exceptions.NotEnoughMoneyException;
 import testOperations.TestDataAccess;
- //proba 2 github actions // proba 3 //proba 4 // proba 5
+ //proba 2 github actions // proba 3 //proba 4 // proba 5 // proba 6
 public class ManageMoneyBDBlackTest {
 
 	//sut:system under test
