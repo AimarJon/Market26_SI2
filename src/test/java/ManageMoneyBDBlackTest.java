@@ -27,7 +27,7 @@ public class ManageMoneyBDBlackTest {
 
 	@Before
 	public  void defaultValues() {
-		regMail="seller1@gmail.com";
+		regMail="test@gmail.com";
 		amount=25;
 		type = MovementType.WITHDRAW;
 	}
