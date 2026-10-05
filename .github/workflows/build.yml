@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - iterazio3
+	  - master
   pull_request:
     types: [opened, synchronize, reopened]
 
