@@ -37,6 +37,7 @@ public class ManageMoneyMockWhiteTest {
 
 	private Registered reg;
 	private String rMail;
+	private String regName;
 	private double initialBalance;
 
 	@Before 
@@ -49,9 +50,10 @@ public class ManageMoneyMockWhiteTest {
 		Mockito.doReturn(et).when(db).getTransaction();
 		sut=new DataAccess(db);
 
-		rMail = "user1@gmail.com";
+		rMail = "test@gmail.com";
+		regName = "test1";
 		initialBalance = 50;
-		reg = new Registered(rMail,"user1","123");
+		reg = new Registered(rMail,regName,"123");
 		reg.setBalance(initialBalance);
 
 

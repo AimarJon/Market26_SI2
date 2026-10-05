@@ -25,7 +25,6 @@ import enums.MovementType;
 
 import exceptions.NotEnoughMoneyException;
 
-
 public class ManageMoneyMockBlackTest {
 
 	static DataAccess sut;
@@ -41,6 +40,7 @@ public class ManageMoneyMockBlackTest {
 
 	private Registered reg;
 	private String rMail;
+	private String regName;
 	private double initialBalance;
 
 
@@ -54,9 +54,10 @@ public class ManageMoneyMockBlackTest {
 		Mockito.doReturn(et).when(db).getTransaction();
 		sut=new DataAccess(db);
 
-		rMail = "user1@gmail.com";
+		rMail = "test@gmail.com";
+		regName = "test1";
 		initialBalance = 50;
-		reg = new Registered(rMail,"user1","123");
+		reg = new Registered(rMail,regName,"123");
 		reg.setBalance(initialBalance);
 
 
@@ -69,9 +70,7 @@ public class ManageMoneyMockBlackTest {
 
 
 	@Test
-	//sut.createSale:  The Seller("sellerTest@ehu.eus","Seller Test") HAS  NOT one sale with that "title"" . 
-	// and the Sale must be created in DB
-	//The test supposes that the "Seller Test" does not exist in the DB
+	// withdraw nahiko dirurekin
 	public void test1() {
 		try {
 			double amount = 25;
@@ -95,9 +94,7 @@ public class ManageMoneyMockBlackTest {
 	}
 
 	@Test
-	//sut.createSale:  The Seller("sellerTest@ehu.eus","Seller Test") HAS  NOT one sale with that "title"" . 
-	// and the Sale must be created in DB
-	//The test supposes that the "Seller Test" does not exist in the DB
+	// deposit egin
 	public void test2() {
 		try {
 			double amount = 25;
@@ -120,9 +117,7 @@ public class ManageMoneyMockBlackTest {
 	}
 
 	@Test
-	//sut.createSale:  The Seller("sellerTest@ehu.eus","Seller Test") HAS  NOT one sale with that "title"" . 
-	// and the Sale must be created in DB
-	//The test supposes that the "Seller Test" does not exist in the DB
+	// withdraw nahiko dirurik gabe
 	public void test3() {
 		try {
 			double amount = 75;
@@ -146,9 +141,7 @@ public class ManageMoneyMockBlackTest {
 	}
 
 	@Test
-	//sut.createSale:  The Seller("sellerTest@ehu.eus","Seller Test") HAS  NOT one sale with that "title"" . 
-	// and the Sale must be created in DB
-	//The test supposes that the "Seller Test" does not exist in the DB
+	//rMail == null denean
 	public void test4() {
 		try {
 			double amount = 25;
@@ -166,31 +159,27 @@ public class ManageMoneyMockBlackTest {
 			fail();
 		} 
 	}
-	
+
 	@Test
-	//sut.createSale:  The Seller("sellerTest@ehu.eus","Seller Test") HAS  NOT one sale with that "title"" . 
-	// and the Sale must be created in DB
-	//The test supposes that the "Seller Test" does not exist in the DB
+	//amount < 0 denean
 	public void test5() {
 		try {
 			double amount = -10;
 			MovementType type = MovementType.DEPOSIT;
 			//invoke System Under Test (sut)  
 			sut.open();
-			Registered emaitzaReg = sut.manageMoney(rMail, amount, type);
+			sut.manageMoney(rMail, amount, type);
 			sut.close();			
 			//verify the results
 			assertTrue(amount < 0);
-			assertEquals(40,emaitzaReg.getBalance(),0.0001); //50+(-10)=40
+			fail("Exception altxa beharko luke.");
 		} catch (Exception e) {
-			fail();
+			assertTrue(true);
 		} 
 	}
-	
+
 	@Test
-	//sut.createSale:  The Seller("sellerTest@ehu.eus","Seller Test") HAS  NOT one sale with that "title"" . 
-	// and the Sale must be created in DB
-	//The test supposes that the "Seller Test" does not exist in the DB
+	//type == null denean
 	public void test6() {
 		try {
 			double amount = 25;

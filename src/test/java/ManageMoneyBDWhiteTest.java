@@ -20,7 +20,8 @@ public class ManageMoneyBDWhiteTest {
 	static TestDataAccess testDA=new TestDataAccess();
 
 	@SuppressWarnings("unused")
-	private  Registered reg; 
+	private  Registered reg;
+	private  String regName;
 	private  String regMail;
 	private  double amount;
 	private  MovementType type;
@@ -29,13 +30,14 @@ public class ManageMoneyBDWhiteTest {
 	public  void defaultValues() {
 		regMail="test@gmail.com";
 		amount=100;
+		regName="test1";
 		type = MovementType.WITHDRAW;
 	}
 	@Test
-	//sut.createSale:  Some of the parameters are null
+	//sut.manageMoney: withdraw nahiko dirurik gabe
 	public void test1() {
 		testDA.open();
-		testDA.addRegistered(regMail, "user1", "123", 50);
+		testDA.addRegistered(regMail, regName, "123", 50);
 		testDA.close();
 		try {
 			//invoke System Under Test (sut)  
@@ -57,18 +59,19 @@ public class ManageMoneyBDWhiteTest {
 	}
 
 	@Test
+	//sut.manageMoney: withdraw nahiko dirurekin
 	public void test2() {
 		testDA.open();
-		testDA.addRegistered(regMail, "user1", "123", 150);
+		testDA.addRegistered(regMail, regName, "123", 50);
 		testDA.close();
 		try {
 			amount = 30;
 			//invoke System Under Test (sut)  
 			sut.open();
-			reg =sut.manageMoney(regMail,amount,type);
+			reg = sut.manageMoney(regMail,amount,type);
 			sut.close();
 
-			assertEquals(120, reg.getBalance(), 0.0001); // 150-30 = 120
+			assertEquals(20, reg.getBalance(), 0.0001); // 50-30 = 20
 
 		} catch (NotEnoughMoneyException e ) { 
 			// if the program goes to this point true  
@@ -83,9 +86,10 @@ public class ManageMoneyBDWhiteTest {
 	}
 
 	@Test
+	// sut.manageMoney: deposit egin
 	public void test3() {
 		testDA.open();
-		testDA.addRegistered(regMail, "user1", "123", 50);
+		testDA.addRegistered(regMail, regName, "123", 50);
 		testDA.close();
 		try {
 			type = MovementType.DEPOSIT;
@@ -106,9 +110,10 @@ public class ManageMoneyBDWhiteTest {
 	}
 
 	@Test
+	//sut.manageMoney:  type = null denean
 	public void test4() {
 		testDA.open();
-		testDA.addRegistered(regMail, "user1", "123", 50);
+		testDA.addRegistered(regMail, regName, "123", 50);
 		testDA.close();
 		try {
 			type = null;

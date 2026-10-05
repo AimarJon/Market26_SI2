@@ -10,7 +10,8 @@ import domain.Registered;
 import enums.MovementType;
 import exceptions.NotEnoughMoneyException;
 import testOperations.TestDataAccess;
- //proba urriak 5 azkena // orain bai azkena 
+
+
 public class ManageMoneyBDBlackTest {
 
 	//sut:system under test
@@ -22,21 +23,23 @@ public class ManageMoneyBDBlackTest {
 	@SuppressWarnings("unused")
 	private  Registered reg; 
 	private  String regMail;
+	private  String regName;
 	private  double amount;
 	private  MovementType type;
 
 	@Before
 	public  void defaultValues() {
 		regMail="test@gmail.com";
+		regName="test1";
 		amount=25;
 		type = MovementType.WITHDRAW;
 	}
 
 	@Test
+	// withdraw nahiko dirurekin
 	public void test1() {
-
 		testDA.open();
-		testDA.addRegistered(regMail, "user1", "123", 50);
+		testDA.addRegistered(regMail, regName, "123", 50);
 		testDA.close();
 		try {
 			//invoke System Under Test (sut)  
@@ -57,10 +60,10 @@ public class ManageMoneyBDBlackTest {
 	} 
 
 	@Test
+	// deposit egin
 	public void test2() {
-
 		testDA.open();
-		testDA.addRegistered(regMail, "user1", "123", 50);
+		testDA.addRegistered(regMail, regName, "123", 50);
 		testDA.close();
 		try {
 			type = MovementType.DEPOSIT;
@@ -82,11 +85,12 @@ public class ManageMoneyBDBlackTest {
 	}
 	
 	@Test
+	// withdraw nahiko dirurik gabe
 	public void test3() {
-
 		testDA.open();
-		testDA.addRegistered(regMail, "user1", "123", 20);
+		testDA.addRegistered(regMail, regName, "123", 50);
 		testDA.close();
+		amount = 75;
 		try {
 			//invoke System Under Test (sut)  
 			sut.open();
@@ -106,10 +110,10 @@ public class ManageMoneyBDBlackTest {
 	}
 
 	@Test
+	//rMail == null denean
 	public void test4() {
-
 		testDA.open();
-		testDA.addRegistered(regMail, "user1", "123", 50);
+		testDA.addRegistered(regMail, regName, "123", 50);
 		testDA.close();
 		try {
 			//invoke System Under Test (sut)  
@@ -130,10 +134,10 @@ public class ManageMoneyBDBlackTest {
 	}
 
 	@Test
+	//amount < 0 denean
 	public void test5() {
-
 		testDA.open();
-		testDA.addRegistered(regMail, "user1", "123", 50);
+		testDA.addRegistered(regMail, regName, "123", 50);
 		testDA.close();
 		try {
 			type = MovementType.DEPOSIT;
@@ -142,10 +146,9 @@ public class ManageMoneyBDBlackTest {
 			sut.open();
 			reg=sut.manageMoney(regMail,amount,type);
 			sut.close();			
-			//verify the results
-			assertEquals(40, reg.getBalance(), 0.0001); // 50+(-10)=40
+			fail("Exception altxa beharko luke.");
 		} catch (Exception e) {
-			fail();
+			assertTrue(true);
 		} finally {   
 			testDA.open();
 			testDA.removeRegistered(regMail);
@@ -154,10 +157,10 @@ public class ManageMoneyBDBlackTest {
 	}
 
 	@Test
+	//type == null denean
 	public void test6() {
-
 		testDA.open();
-		testDA.addRegistered(regMail, "user1", "123", 50);
+		testDA.addRegistered(regMail, regName, "123", 50);
 		testDA.close();
 		try {
 			type = null;
