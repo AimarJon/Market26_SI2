@@ -46,10 +46,10 @@
 	<properties>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
-
-		<sonar.organization>AimarJon</sonar.organization>
+		<sonar.organization>aimarjon</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		<sonar.projectKey>AimarJon_Market26_SI2</sonar.projectKey>
+		<sonar.projectKey>aimarjon_market26-si2</sonar.projectKey>
+		<sonar.token>db50e04c0b0e98dc3b408d372eb828576bc081eb</sonar.token>
 	</properties>
 
 	<!-- https://mvnrepository.com/artifact/junit/junit -->
