@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+	  - iterazio3
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
