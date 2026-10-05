@@ -1,7 +1,7 @@
 name: SonarQube
 on:
   push:
-    branches: [iterazio3, master]
+    branches: [master]
   pull_request:
     types: [opened, synchronize, reopened]
 
