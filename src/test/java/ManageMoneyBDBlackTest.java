@@ -10,7 +10,7 @@ import domain.Registered;
 import enums.MovementType;
 import exceptions.NotEnoughMoneyException;
 import testOperations.TestDataAccess;
- //proba urriak 5 azkena // orain bai azkena
+ //proba urriak 5 azkena // orain bai azkena 
 public class ManageMoneyBDBlackTest {
 
 	//sut:system under test
