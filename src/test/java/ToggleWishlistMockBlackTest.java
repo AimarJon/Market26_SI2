@@ -111,7 +111,7 @@ public class ToggleWishlistMockBlackTest {
 		assertFalse(result);
 	}
 	
-	/*@Test
+	@Test
 	public void test4() {
 		int saleNumber = 1;
 
@@ -122,7 +122,7 @@ public class ToggleWishlistMockBlackTest {
 		sut.close();
 
 		assertFalse(result);
-	}*/
+	}
 	
 	@Test
 	public void test5() {

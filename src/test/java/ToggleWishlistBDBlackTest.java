@@ -101,7 +101,7 @@ public class ToggleWishlistBDBlackTest {
 		assertFalse(result);
 	}
 	
-	/*@Test
+	@Test
 	public void test4() {
 		String noExistingMail = "err@gmail.com";
 		int saleNumber = 2;
@@ -111,7 +111,7 @@ public class ToggleWishlistBDBlackTest {
 		sut.close();
 
 		assertFalse(result);
-	}*/
+	}
 
 	@Test
 	public void test5() {
