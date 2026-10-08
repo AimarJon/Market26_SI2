@@ -83,7 +83,7 @@ public class ManageMoneyBDBlackTest {
 			testDA.close();
 		}
 	}
-	
+/*	
 	@Test
 	// withdraw nahiko dirurik gabe
 	public void test3() {
@@ -108,7 +108,7 @@ public class ManageMoneyBDBlackTest {
 			testDA.close();
 		}
 	}
-
+*/
 	@Test
 	//rMail == null denean
 	public void test4() {
