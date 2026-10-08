@@ -64,7 +64,7 @@ public class ManageMoneyMockWhiteTest {
 		persistenceMock.close();
 	}
 
-/*	
+	
 	@Test
 	//sut.createSale:  withdraw nahiko dirurik gabe
 	public void test1() {
@@ -84,7 +84,7 @@ public class ManageMoneyMockWhiteTest {
 			fail();
 		} 
 	}
-*/
+
 	@Test
 	//sut.manageMoney:  withdraw egin nahiko dirurekin
 	public void test2() {

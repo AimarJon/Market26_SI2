@@ -33,7 +33,7 @@ public class ManageMoneyBDWhiteTest {
 		regName="test1";
 		type = MovementType.WITHDRAW;
 	}
-	/*
+	
 	@Test
 	//sut.manageMoney: withdraw nahiko dirurik gabe
 	public void test1() {
@@ -59,7 +59,7 @@ public class ManageMoneyBDWhiteTest {
 		}
 	}
 	
-*/
+
 	@Test
 	//sut.manageMoney: withdraw nahiko dirurekin
 	public void test2() {
