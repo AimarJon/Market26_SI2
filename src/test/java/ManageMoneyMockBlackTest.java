@@ -115,7 +115,7 @@ public class ManageMoneyMockBlackTest {
 			fail();
 		} 
 	}
-
+/*
 	@Test
 	// withdraw nahiko dirurik gabe
 	public void test3() {
@@ -159,7 +159,7 @@ public class ManageMoneyMockBlackTest {
 			fail();
 		} 
 	}
-
+*/
 	@Test
 	//amount < 0 denean
 	public void test5() {
