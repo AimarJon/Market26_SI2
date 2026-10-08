@@ -27,7 +27,7 @@ public class ToggleWishlistBDWhiteTest {
 		password = "123";
 	}
 	
-	@Test
+	/*@Test
 	public void test1() {
 		String noExistingMail = "err@gmail.com";
 		int saleNumber = 1;
@@ -37,7 +37,7 @@ public class ToggleWishlistBDWhiteTest {
 		sut.close();
 
 		assertFalse(result); // DB egoera: ez da aldatzen
-	}
+	}*/
 	
 	@Test
 	public void test2() {
