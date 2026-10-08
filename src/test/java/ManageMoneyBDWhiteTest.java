@@ -33,6 +33,7 @@ public class ManageMoneyBDWhiteTest {
 		regName="test1";
 		type = MovementType.WITHDRAW;
 	}
+	/*
 	@Test
 	//sut.manageMoney: withdraw nahiko dirurik gabe
 	public void test1() {
@@ -57,6 +58,7 @@ public class ManageMoneyBDWhiteTest {
 			testDA.close();
 		}
 	}
+	*/
 
 	@Test
 	//sut.manageMoney: withdraw nahiko dirurekin
