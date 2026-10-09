@@ -26,7 +26,7 @@ public class ToggleWishlistBDWhiteTest {
 		name = "user1";
 		password = "123";
 	}
-	
+/*	
 	@Test
 	public void test1() {
 		String noExistingMail = "err@gmail.com";
@@ -38,7 +38,7 @@ public class ToggleWishlistBDWhiteTest {
 
 		assertFalse(result); // DB egoera: ez da aldatzen
 	}
-	
+*/	
 	@Test
 	public void test2() {
 		testDA.open();

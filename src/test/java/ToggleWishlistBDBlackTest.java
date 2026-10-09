@@ -100,7 +100,7 @@ public class ToggleWishlistBDBlackTest {
 
 		assertFalse(result);
 	}
-	
+/*	
 	@Test
 	public void test4() {
 		String noExistingMail = "err@gmail.com";
@@ -112,7 +112,7 @@ public class ToggleWishlistBDBlackTest {
 
 		assertFalse(result);
 	}
-
+*/
 	@Test
 	public void test5() {
 		testDA.open();

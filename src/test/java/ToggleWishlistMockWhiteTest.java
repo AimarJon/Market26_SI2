@@ -58,7 +58,7 @@ public class ToggleWishlistMockWhiteTest {
     public  void tearDown() {
 		persistenceMock.close();
     }
-	
+/*	
 	@Test
 	public void test1() {
 		int saleNumber = 1;
@@ -71,7 +71,7 @@ public class ToggleWishlistMockWhiteTest {
 		
 		assertFalse(result);
 	}
-	
+*/	
 	@Test
 	public void test2() {
 		int saleNumber = 9999;

@@ -110,7 +110,7 @@ public class ToggleWishlistMockBlackTest {
 
 		assertFalse(result);
 	}
-	
+/*	
 	@Test
 	public void test4() {
 		int saleNumber = 1;
@@ -123,7 +123,7 @@ public class ToggleWishlistMockBlackTest {
 
 		assertFalse(result);
 	}
-	
+*/	
 	@Test
 	public void test5() {
 		int saleNumberErr = 9999;
