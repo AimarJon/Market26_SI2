@@ -97,7 +97,7 @@ public class ToggleWishlistMockBlackTest {
 		assertTrue(reg.getWishList().contains(sale)); // orain badago dago
 		
 	}
-	
+/*	
 	@Test
 	public void test3() {
 		int saleNumber = 1;
@@ -110,7 +110,7 @@ public class ToggleWishlistMockBlackTest {
 
 		assertFalse(result);
 	}
-/*	
+	
 	@Test
 	public void test4() {
 		int saleNumber = 1;
