@@ -483,54 +483,58 @@ public class DataAccess  {
 	}
 
 	public boolean buySale(String mail, ArrayList<Integer> saleNumbers) throws NotEnoughMoneyException{
-		db.getTransaction().begin();
-		
-		//Existitzen badira ==> Egoera aldatu + email-a balidatu + prezioa igo
-		Registered buyer = db.find(Registered.class, mail);
-		ArrayList<Sale> sales = new ArrayList<Sale>();
-		Sale first = db.find(Sale.class, saleNumbers.get(0));
-		if(first == null || buyer == null) {
-			db.getTransaction().rollback();
-			return false;
-		}
-		first.setSaleStatus(SaleStatusType.BOUGHT);
-		sales.add(first);
-		float totalPrize = first.getPrice();
-		Registered seller = first.getSeller();
+	    db.getTransaction().begin();
+	    Registered buyer = db.find(Registered.class, mail);
+	    ArrayList<Sale> sales = findSalesOfSameSeller(saleNumbers);
+	    if (buyer == null || sales == null || sales.isEmpty()) {
+	        db.getTransaction().rollback();
+	        return false;
+	    }
+	    float totalPrize = totalPrice(sales);
+	    checkBalance(buyer, totalPrize);
+	    transfer(buyer, sales, totalPrize);
+	    cleanWishLists(sales);
+	    db.getTransaction().commit();
+	    return true;
 
-		int i = 1;
-		while(i < saleNumbers.size()) {
-			Sale s = db.find(Sale.class, saleNumbers.get(i));
-			if(s == null || seller != s.getSeller()) {
-				db.getTransaction().rollback();
-				return false;
-			}
-			s.setSaleStatus(SaleStatusType.BOUGHT);
-			sales.add(s);
-			totalPrize += s.getPrice();
-			i++;
-		}
+	}
+	
+	private ArrayList<Sale> findSalesOfSameSeller(ArrayList<Integer> saleNumbers) {
+	    ArrayList<Sale> sales = new ArrayList<Sale>();
+	    for (Integer number : saleNumbers) {
+	        Sale s = db.find(Sale.class, number);
+	        if (s == null || (!sales.isEmpty() && s.getSeller() != sales.get(0).getSeller()))
+	            return null;
+	        sales.add(s);
+	    }
+	    return sales;
+	}
 
-		if (totalPrize > buyer.getBalance()) {
-			db.getTransaction().rollback();
-			throw new NotEnoughMoneyException();
-		}
+	private float totalPrice(ArrayList<Sale> sales) {
+	    float total = 0;
+	    for (Sale s : sales) total += s.getPrice();
+	    return total;
+	}
+	
+	private void checkBalance(Registered buyer, float total) throws NotEnoughMoneyException {
+	    if (total > buyer.getBalance()) {
+	        db.getTransaction().rollback();
+	        throw new NotEnoughMoneyException();
+	    }
+	}
 
-		double newBuyerBalance = buyer.getBalance()-totalPrize;
-		buyer.addToBought(sales);
-		buyer.setBalance(newBuyerBalance);
-		buyer.addToMovements(MovementType.BUY,totalPrize,newBuyerBalance,sales);
+	private void transfer(Registered buyer, ArrayList<Sale> sales, float total) {
+	    Registered seller = sales.get(0).getSeller();
+	    sales.forEach(s -> s.setSaleStatus(SaleStatusType.BOUGHT));
 
+	    double newBuyerBalance = buyer.getBalance() - total;
+	    buyer.addToBought(sales);
+	    buyer.setBalance(newBuyerBalance);
+	    buyer.addToMovements(MovementType.BUY, total, newBuyerBalance, sales);
 
-		double newSellerBalance = seller.getBalance()+totalPrize;
-		seller.setBalance(newSellerBalance);
-		seller.addToMovements(MovementType.SELL,totalPrize,newSellerBalance,sales);
-
-		cleanWishLists(sales);
-
-		db.getTransaction().commit();
-		return true;
-
+	    double newSellerBalance = seller.getBalance() + total;
+	    seller.setBalance(newSellerBalance);
+	    seller.addToMovements(MovementType.SELL, total, newSellerBalance, sales);
 	}
 
 
@@ -660,36 +664,27 @@ public class DataAccess  {
 	}
 
 	public void declineReport(int reportID) {
-		db.getTransaction().begin();
+	    db.getTransaction().begin();
+	    Report r = db.find(Report.class, reportID);
+	    if (r != null) removeReport(r);
+	    db.getTransaction().commit();
+	}
 
-		Report r = db.find(Report.class, reportID);
+	private void removeReport(Report r) {
+	    Registered reg = r.getUser();
+	    Sale sale = r.getSale();
+	    if (reg != null) reg.getReports().remove(r);
+	    if (sale != null) {
+	        sale.getReports().remove(r);
+	        if (!hasPendingReports(sale)) sale.setSaleStatus(SaleStatusType.ON_SALE);
+	    }
+	    db.remove(r);
+	}
 
-		if (r == null) {
-			db.getTransaction().commit();
-			return;
-		}
-
-		Registered reg = r.getUser();
-		Sale sale = r.getSale();
-
-		if (reg != null) reg.getReports().remove(r);
-		if (sale != null) sale.getReports().remove(r);
-		db.remove(r);
-
-		if (sale != null) {
-			boolean reportsPending = false;
-			for (Report rep : sale.getReports()) {
-				if (!rep.isTreated()) {
-					reportsPending = true;
-					break;
-				}
-			}
-			if (!reportsPending) {
-				sale.setSaleStatus(SaleStatusType.ON_SALE);
-			}
-		}
-
-		db.getTransaction().commit();
+	private boolean hasPendingReports(Sale sale) {
+	    for (Report rep : sale.getReports())
+	        if (!rep.isTreated()) return true;
+	    return false;
 	}
 
 	public void adminReport(int reportID) {

@@ -1,5 +1,6 @@
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Date;
 
@@ -94,13 +95,16 @@ public class ToggleWishlistBDBlackTest {
 		String nullMail = null;
 		int saleNumber = 2;
 
+		try {
 		sut.open();
-		boolean result = sut.toggleWishList(nullMail, saleNumber);
+		sut.toggleWishList(nullMail, saleNumber);
 		sut.close();
-
-		assertFalse(result);
+		fail();
+		}catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
 	}
-/*	
+	
 	@Test
 	public void test4() {
 		String noExistingMail = "err@gmail.com";
@@ -112,7 +116,7 @@ public class ToggleWishlistBDBlackTest {
 
 		assertFalse(result);
 	}
-*/
+
 	@Test
 	public void test5() {
 		testDA.open();

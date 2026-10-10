@@ -115,7 +115,7 @@ public class ManageMoneyMockBlackTest {
 			fail();
 		} 
 	}
-/*
+
 	@Test
 	// withdraw nahiko dirurik gabe
 	public void test3() {
@@ -139,7 +139,7 @@ public class ManageMoneyMockBlackTest {
 			fail();
 		} 
 	}
-*/
+
 	@Test
 	//rMail == null denean
 	public void test4() {
