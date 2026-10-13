@@ -47,9 +47,9 @@ public class DataAccess  {
 
 	private static final String basePath="src/main/resources/images/";
 
-    private static final Logger logger = LoggerFactory.getLogger(DataAccess.class);
-    
-    private static final String RESOURCE_BUNDLE_NAME = "Etiquetas";
+	private static final Logger logger = LoggerFactory.getLogger(DataAccess.class);
+
+	private static final String RESOURCE_BUNDLE_NAME = "Etiquetas";
 
 
 	ConfigXML c=ConfigXML.getInstance();
@@ -340,9 +340,7 @@ public class DataAccess  {
 		ArrayList<Offer> offers = new ArrayList<Offer>();
 		for(Offer o:query.getResultList()) {
 			Request r = o.getRequest();
-			if(	r.getRequester().getEmail().equals(currentMail) && 
-					r.getRequestStatus().equals(RequestStatusType.AVAILABLE) &&
-					r.getTitle().contains(filter)) {
+			if(isElegibleOffer(o,currentMail,filter)) {
 				System.out.println("getOffers, currentmail: "+currentMail);
 				offers.add(o);
 			}
@@ -350,6 +348,11 @@ public class DataAccess  {
 
 		return offers;
 
+	}
+	
+	private boolean isElegibleOffer(Offer o, String currentMail, String filter) {
+		Request req = o.getRequest();
+		return req.getRequester().getEmail().equals(currentMail) && req.getRequestStatus().equals(RequestStatusType.AVAILABLE) && req.getTitle().contains(filter);
 	}
 
 
@@ -483,58 +486,58 @@ public class DataAccess  {
 	}
 
 	public boolean buySale(String mail, ArrayList<Integer> saleNumbers) throws NotEnoughMoneyException{
-	    db.getTransaction().begin();
-	    Registered buyer = db.find(Registered.class, mail);
-	    ArrayList<Sale> sales = findSalesOfSameSeller(saleNumbers);
-	    if (buyer == null || sales == null || sales.isEmpty()) {
-	        db.getTransaction().rollback();
-	        return false;
-	    }
-	    float totalPrize = totalPrice(sales);
-	    checkBalance(buyer, totalPrize);
-	    transfer(buyer, sales, totalPrize);
-	    cleanWishLists(sales);
-	    db.getTransaction().commit();
-	    return true;
+		db.getTransaction().begin();
+		Registered buyer = db.find(Registered.class, mail);
+		ArrayList<Sale> sales = findSalesOfSameSeller(saleNumbers);
+		if (buyer == null || sales == null || sales.isEmpty()) {
+			db.getTransaction().rollback();
+			return false;
+		}
+		float totalPrize = totalPrice(sales);
+		checkBalance(buyer, totalPrize);
+		transfer(buyer, sales, totalPrize);
+		cleanWishLists(sales);
+		db.getTransaction().commit();
+		return true;
 
 	}
-	
+
 	private ArrayList<Sale> findSalesOfSameSeller(ArrayList<Integer> saleNumbers) {
-	    ArrayList<Sale> sales = new ArrayList<Sale>();
-	    for (Integer number : saleNumbers) {
-	        Sale s = db.find(Sale.class, number);
-	        if (s == null || (!sales.isEmpty() && s.getSeller() != sales.get(0).getSeller()))
-	            return null;
-	        sales.add(s);
-	    }
-	    return sales;
+		ArrayList<Sale> sales = new ArrayList<Sale>();
+		for (Integer number : saleNumbers) {
+			Sale s = db.find(Sale.class, number);
+			if (s == null || (!sales.isEmpty() && s.getSeller() != sales.get(0).getSeller()))
+				return null;
+			sales.add(s);
+		}
+		return sales;
 	}
 
 	private float totalPrice(ArrayList<Sale> sales) {
-	    float total = 0;
-	    for (Sale s : sales) total += s.getPrice();
-	    return total;
+		float total = 0;
+		for (Sale s : sales) total += s.getPrice();
+		return total;
 	}
-	
+
 	private void checkBalance(Registered buyer, float total) throws NotEnoughMoneyException {
-	    if (total > buyer.getBalance()) {
-	        db.getTransaction().rollback();
-	        throw new NotEnoughMoneyException();
-	    }
+		if (total > buyer.getBalance()) {
+			db.getTransaction().rollback();
+			throw new NotEnoughMoneyException();
+		}
 	}
 
 	private void transfer(Registered buyer, ArrayList<Sale> sales, float total) {
-	    Registered seller = sales.get(0).getSeller();
-	    sales.forEach(s -> s.setSaleStatus(SaleStatusType.BOUGHT));
+		Registered seller = sales.get(0).getSeller();
+		sales.forEach(s -> s.setSaleStatus(SaleStatusType.BOUGHT));
 
-	    double newBuyerBalance = buyer.getBalance() - total;
-	    buyer.addToBought(sales);
-	    buyer.setBalance(newBuyerBalance);
-	    buyer.addToMovements(MovementType.BUY, total, newBuyerBalance, sales);
+		double newBuyerBalance = buyer.getBalance() - total;
+		buyer.addToBought(sales);
+		buyer.setBalance(newBuyerBalance);
+		buyer.addToMovements(MovementType.BUY, total, newBuyerBalance, sales);
 
-	    double newSellerBalance = seller.getBalance() + total;
-	    seller.setBalance(newSellerBalance);
-	    seller.addToMovements(MovementType.SELL, total, newSellerBalance, sales);
+		double newSellerBalance = seller.getBalance() + total;
+		seller.setBalance(newSellerBalance);
+		seller.addToMovements(MovementType.SELL, total, newSellerBalance, sales);
 	}
 
 
@@ -664,27 +667,27 @@ public class DataAccess  {
 	}
 
 	public void declineReport(int reportID) {
-	    db.getTransaction().begin();
-	    Report r = db.find(Report.class, reportID);
-	    if (r != null) removeReport(r);
-	    db.getTransaction().commit();
+		db.getTransaction().begin();
+		Report r = db.find(Report.class, reportID);
+		if (r != null) removeReport(r);
+		db.getTransaction().commit();
 	}
 
 	private void removeReport(Report r) {
-	    Registered reg = r.getUser();
-	    Sale sale = r.getSale();
-	    if (reg != null) reg.getReports().remove(r);
-	    if (sale != null) {
-	        sale.getReports().remove(r);
-	        if (!hasPendingReports(sale)) sale.setSaleStatus(SaleStatusType.ON_SALE);
-	    }
-	    db.remove(r);
+		Registered reg = r.getUser();
+		Sale sale = r.getSale();
+		if (reg != null) reg.getReports().remove(r);
+		if (sale != null) {
+			sale.getReports().remove(r);
+			if (!hasPendingReports(sale)) sale.setSaleStatus(SaleStatusType.ON_SALE);
+		}
+		db.remove(r);
 	}
 
 	private boolean hasPendingReports(Sale sale) {
-	    for (Report rep : sale.getReports())
-	        if (!rep.isTreated()) return true;
-	    return false;
+		for (Report rep : sale.getReports())
+			if (!rep.isTreated()) return true;
+		return false;
 	}
 
 	public void adminReport(int reportID) {
@@ -746,31 +749,41 @@ public class DataAccess  {
 		db.getTransaction().begin();
 
 		Offer o = db.find(Offer.class, offer.getOfferId());
-		Request r = o.getRequest();
-
-		o.setOfferStatus(OfferStatusType.ACCEPTED);
-		r.setRequestStatus(RequestStatusType.COMPLETED);
+		updateOfferRequestStatus(o);
 
 		String offererEmail = o.getRegistered().getEmail();
-		String requesterEmail = r.getRequester().getEmail();
-
+		String requesterEmail = o.getRequest().getRequester().getEmail();
 		Registered requester = db.find(Registered.class, requesterEmail);
 		Registered offerer = db.find(Registered.class, offererEmail);
 
-		Double price = o.getPrice();
+		checkRequesterBalance(requester, o.getPrice());
 
-		if (price > requester.getBalance()) {
+		processAcceptedOfferTransaction(requester, offerer, o);
+
+		db.getTransaction().commit();
+	}
+
+	private void updateOfferRequestStatus(Offer o) {
+		o.setOfferStatus(OfferStatusType.ACCEPTED);	
+		o.getRequest().setRequestStatus(RequestStatusType.COMPLETED);
+	}
+
+	private void checkRequesterBalance(Registered requester, double price) throws NotEnoughMoneyException{
+		if(price > requester.getBalance()) {
 			throw new NotEnoughMoneyException();
 		}
+	}
 
-		Sale s = offerer.addSale(r.getTitle(), r.getDescription(), o.getStatus(), (float) o.getPrice(), UtilDate.trim(new Date()), null);
+	private void processAcceptedOfferTransaction(Registered requester, Registered offerer, Offer o) {
+		Sale s = offerer.addSale(o.getRequest().getTitle(), o.getRequest().getDescription(), o.getStatus(), (float) o.getPrice(), UtilDate.trim(new Date()), null);	
 		s.setSaleStatus(SaleStatusType.BOUGHT);
 
 		ArrayList<Sale> saleList = new ArrayList<>();
 		saleList.add(s);
 
+		double price = o.getPrice();
 		double newBuyerBalance  = requester.getBalance() - price;
-		double newSellerBalance = offerer.getBalance()   + price;
+		double newSellerBalance = offerer.getBalance() + price;
 
 		requester.addToBought(saleList);
 		requester.setBalance(newBuyerBalance);
@@ -778,9 +791,6 @@ public class DataAccess  {
 
 		offerer.setBalance(newSellerBalance);
 		offerer.addToMovements(MovementType.SELL, price, newSellerBalance, saleList);
-
-		db.getTransaction().commit();
-
 	}
 
 	public void declineOffer(Offer offer) {
