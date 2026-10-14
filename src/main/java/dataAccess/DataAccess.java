@@ -242,18 +242,18 @@ public class DataAccess  {
 		}
 		return ema;
 	}
-	
+
 	private List<Sale> findPublishedSales(String desc, Date pubDate) {
-	    TypedQuery<Sale> query = db.createQuery(
-	        "SELECT s FROM Sale s WHERE s.title LIKE ?1 AND s.pubDate <= ?2 AND (s.saleStatus = ?3 OR s.saleStatus = ?4)",
-	        Sale.class);
+		TypedQuery<Sale> query = db.createQuery(
+				"SELECT s FROM Sale s WHERE s.title LIKE ?1 AND s.pubDate <= ?2 AND (s.saleStatus = ?3 OR s.saleStatus = ?4)",
+				Sale.class);
 
-	    query.setParameter(1, "%" + desc + "%");
-	    query.setParameter(2, pubDate);
-	    query.setParameter(3, SaleStatusType.ON_SALE);
-	    query.setParameter(4, SaleStatusType.USER_REPORTED);
+		query.setParameter(1, "%" + desc + "%");
+		query.setParameter(2, pubDate);
+		query.setParameter(3, SaleStatusType.ON_SALE);
+		query.setParameter(4, SaleStatusType.USER_REPORTED);
 
-	    return query.getResultList();
+		return query.getResultList();
 	}
 
 	public List<Sale> getOnSales(String email, String filter) {
@@ -341,7 +341,7 @@ public class DataAccess  {
 		return offers;
 
 	}
-	
+
 	private boolean isElegibleOffer(Offer o, String currentMail, String filter) {
 		Request req = o.getRequest();
 		return req.getRequester().getEmail().equals(currentMail) && req.getRequestStatus().equals(RequestStatusType.AVAILABLE) && req.getTitle().contains(filter);
@@ -553,13 +553,14 @@ public class DataAccess  {
 		boolean listanDago = isInWishList(mail, saleNumber);
 
 		db.getTransaction().begin();
-		Registered seller = db.find(Registered.class, mail);
-		Sale sale = db.find(Sale.class, saleNumber);
+		Object[] entities = findAndValidate(mail, saleNumber);
 
-		if (seller == null || sale == null) {
-			db.getTransaction().commit();
+		if (entities == null) {
 			return false;
 		}
+		Registered seller = (Registered) entities[0];
+		Sale sale = (Sale) entities[1];
+
 
 		//Ezin daitezke bi trantsakzio aldi berean hasi, beraz hasieran ikusi dagoen edo ez
 		if(!listanDago) seller.addToWishList(sale);
@@ -571,17 +572,26 @@ public class DataAccess  {
 
 	public boolean isInWishList(String mail, int saleNumber) {
 		db.getTransaction().begin();
-		Registered seller = db.find(Registered.class, mail);
-		Sale sale = db.find(Sale.class, saleNumber);
+		Object[] entities = findAndValidate(mail, saleNumber);
 
-		if (seller == null || sale == null) {
-			db.getTransaction().commit();
+		if (entities == null) {
 			return false;
 		}
+		Registered seller = (Registered) entities[0];
+		Sale sale = (Sale) entities[1];
+
 		db.getTransaction().commit();
 		return seller.getWishList().contains(sale);
+	}
 
-
+	private Object[] findAndValidate(String mail, int saleNumber) {
+		Registered seller = db.find(Registered.class, mail);
+		Sale sale = db.find(Sale.class, saleNumber);
+		if (seller == null || sale == null) {
+			db.getTransaction().commit();
+			return null;
+		}
+		return new Object[] { seller, sale };
 	}
 
 	public void cleanWishLists(ArrayList<Sale> sales) {
