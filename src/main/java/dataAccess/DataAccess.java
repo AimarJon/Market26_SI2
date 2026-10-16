@@ -228,15 +228,14 @@ public class DataAccess  {
 		return ema;
 	}
 
-	public List<Sale> getPublishedSales(String desc, Date pubDate, String buyerEmail, String sellerMail, ArrayList<Sale> basket) {
-		List<Sale> sales = findPublishedSales(desc, pubDate);
+	public List<Sale> getPublishedSales(PublishedSalesData data) {
+		List<Sale> sales = findPublishedSales(data.getDesc(), data.getPubDate());
 		ArrayList<Sale> ema = new ArrayList<Sale>();
-		System.out.println("Data acces basket: " + basket);
+		System.out.println("Data acces basket: " + data.getBasket());
 		for (Sale s : sales) {
-
-			if (!s.getSeller().getEmail().equals(buyerEmail) && s.getSeller().getEmail().equals(sellerMail)) {
+			if (!s.getSeller().getEmail().equals(data.getBuyerEmail()) && s.getSeller().getEmail().equals(data.getSellerMail())) {
 				System.out.println("s: " + s);
-				if(!basket.contains(s))
+				if(!data.getBasket().contains(s))
 					ema.add(s);
 			}
 		}

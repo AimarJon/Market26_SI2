@@ -20,6 +20,7 @@ import domain.MovementContainer;
 import domain.Offer;
 import domain.OfferContainer;
 import domain.OfferData;
+import domain.PublishedSalesData;
 import domain.Registered;
 import domain.Report;
 import domain.ReportContainer;
@@ -46,10 +47,9 @@ import org.slf4j.LoggerFactory;
  */
 @WebService(endpointInterface = "businessLogic.BLFacade")
 public class BLFacadeImplementation  implements BLFacade {
-	
-    private static final Logger logger = LoggerFactory.getLogger(BLFacadeImplementation.class);
-	
-	private static final int BASE_SIZE = 160;
+
+	private static final Logger logger = LoggerFactory.getLogger(BLFacadeImplementation.class);
+
 
 	private static final String BASE_PATH="src/main/resources/images/";
 	DataAccess dbManager;
@@ -103,7 +103,7 @@ public class BLFacadeImplementation  implements BLFacade {
 			rides = dbManager.getOnSales(email, desc);
 			break;
 		case PUBLISHED_SALES:
-			rides = (sellerEmail.equals("")) ? dbManager.getPublishedSales(desc,pubDate,email) : dbManager.getPublishedSales(desc,pubDate,email, sellerEmail, basket);
+			rides = (sellerEmail.equals("")) ? dbManager.getPublishedSales(desc,pubDate,email) : dbManager.getPublishedSales(new PublishedSalesData(desc, pubDate, email, sellerEmail, basket));
 			break;
 		case PURCHASED:
 			rides = dbManager.getPurchased(email, desc);
@@ -134,7 +134,7 @@ public class BLFacadeImplementation  implements BLFacade {
 
 	public List<ComplaintContainer> getComplaints() {
 		dbManager.open();
-		List<Complaint> rides= dbManager.getComplaints();;
+		List<Complaint> rides= dbManager.getComplaints();
 		List<ComplaintContainer> com = new ArrayList<>();
 
 		for (Complaint c : rides) {
@@ -189,17 +189,17 @@ public class BLFacadeImplementation  implements BLFacade {
 		dbManager.close();
 		return ofs;
 	}
-	
+
 	@WebMethod public List<ReviewContainer> getReviews(String currentMail, String filter){
 		dbManager.open();
 		List<Review> reviews = dbManager.getReviews(currentMail, filter);
 		List<ReviewContainer> rvs= new ArrayList<>();
-		
+
 		for(Review r: reviews) {
 			rvs.add(new ReviewContainer(r));
 		}
 		dbManager.close();
-		
+
 		return rvs;
 
 
@@ -276,9 +276,9 @@ public class BLFacadeImplementation  implements BLFacade {
 		return reg;
 	}
 
-	@WebMethod public boolean removeSale(int SaleNumber) {
+	@WebMethod public boolean removeSale(int saleNumber) {
 		dbManager.open();
-		boolean b = dbManager.removeSale(SaleNumber);
+		boolean b = dbManager.removeSale(saleNumber);
 		dbManager.close();
 		return b;
 	}
