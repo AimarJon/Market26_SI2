@@ -739,11 +739,11 @@ public class DataAccess  {
 		db.getTransaction().commit();
 	}
 
-	public void makeOffer(String offererMail, Request request, double price, int status, String description) {
+	public void makeOffer(String offererMail, Request request, OfferData parameterObject) {
 		db.getTransaction().begin();
 		Registered reg = db.find(Registered.class,offererMail);
 		if (reg== null) return;
-		reg.addOffer(request,status,price,description);
+		reg.addOffer(request,parameterObject.status,parameterObject.price,parameterObject.description);
 		db.getTransaction().commit();
 	}
 

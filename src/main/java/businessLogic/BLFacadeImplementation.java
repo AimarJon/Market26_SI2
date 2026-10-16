@@ -19,6 +19,7 @@ import domain.Movement;
 import domain.MovementContainer;
 import domain.Offer;
 import domain.OfferContainer;
+import domain.OfferData;
 import domain.Registered;
 import domain.Report;
 import domain.ReportContainer;
@@ -367,7 +368,7 @@ public class BLFacadeImplementation  implements BLFacade {
 
 	public void makeOffer(String offererMail, Request request, double price, int status, String description) {
 		dbManager.open();
-		dbManager.makeOffer(offererMail, request, price, status, description);
+		dbManager.makeOffer(offererMail, request, new OfferData(price, status, description));
 		dbManager.close();
 
 	}
