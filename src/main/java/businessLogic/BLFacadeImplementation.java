@@ -32,6 +32,7 @@ import exceptions.FileNotUploadedException;
 import exceptions.MustBeLaterThanTodayException;
 import exceptions.NotEnoughMoneyException;
 import exceptions.SaleAlreadyExistException;
+import iterator.*;
 
 import java.awt.image.BufferedImage;
 import java.awt.Image;
@@ -114,6 +115,12 @@ public class BLFacadeImplementation  implements BLFacade {
 		}
 		dbManager.close();
 		return rides;
+	}
+	
+	@Override
+	public ExtendedIterator<Sale> getSalesIterator(String desc, String email) {
+	    List<Sale> sales = getQuery(desc, null, SaleType.ON_SALES, email, "", null);
+	    return new SalesIterator(sales);
 	}
 
 	/**

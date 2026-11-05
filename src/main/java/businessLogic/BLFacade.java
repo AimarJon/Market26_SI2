@@ -23,6 +23,8 @@ import exceptions.FileNotUploadedException;
 import exceptions.MustBeLaterThanTodayException;
 import exceptions.NotEnoughMoneyException;
 import exceptions.SaleAlreadyExistException;
+import iterator.ExtendedIterator;
+import iterator.SalesIterator;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -137,5 +139,7 @@ public interface BLFacade  {
 	@WebMethod public void makeReview(String currentUserMail, Sale sale, int rating, String desc);
 
 	@WebMethod public boolean hasReviewed(String currentUserMail, Sale s);
+	
+	@WebMethod public ExtendedIterator<Sale> getSalesIterator(String desc, String email);
 	
 }

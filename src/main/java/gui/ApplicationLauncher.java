@@ -12,6 +12,7 @@ import configuration.ConfigXML;
 import dataAccess.DataAccess;
 import businessLogic.BLFacade;
 import businessLogic.BLFacadeImplementation;
+import businessLogic.BLFactory;
 
 public class ApplicationLauncher { 
 	
@@ -25,40 +26,25 @@ public class ApplicationLauncher {
 		a.setVisible(true);
 
 
-		try {
-			
-			BLFacade appFacadeInterface;
-			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-			
-			if (c.isBusinessLogicLocal()) {
-				DataAccess da= new DataAccess();
-				appFacadeInterface=new BLFacadeImplementation(da);
-			}
-			else { //If remote
-				
-				 String serviceName= "http://"+c.getBusinessLogicNode() +":"+ c.getBusinessLogicPort()+"/ws/"+c.getBusinessLogicName()+"?wsdl";	 
-				 URL url = new URL(serviceName);
+		 try {
+	            UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 
-		 
-		        //1st argument refers to wsdl document above
-				//2nd argument is service name, refer to wsdl document above
-		        QName qname = new QName("http://businessLogic/", "BLFacadeImplementationService");
-		 
-		        Service service = Service.create(url, qname);
+	            BLFactory.Type type;
+	            
+	            if(c.isBusinessLogicLocal()) {
+	            	type = BLFactory.Type.LOCAL;
+	            }else {
+	            	type = BLFactory.Type.REMOTE;
+	            }
+	            
 
-		        appFacadeInterface = service.getPort(BLFacade.class);
-			} 
-			
-			MainGUInonReg.setBussinessLogic(appFacadeInterface);
-			//ErreklamatuGUI g=new ErreklamatuGUI();
-			//g.setVisible(true);
-			
-		}catch (Exception e) {
-		//	a.jLabelSelectOption.setText("Error: "+e.toString());
-		//	a.jLabelSelectOption.setForeground(Color.RED);	
-			
-			System.out.println("Error in ApplicationLauncher: "+e.toString());
-		}
+	            BLFacade appFacadeInterface = BLFactory.createBLFacade(type);
+
+	            MainGUInonReg.setBussinessLogic(appFacadeInterface);
+
+	        } catch (Exception e) {
+	            System.out.println("Error in ApplicationLauncher: " + e.toString());
+	        }
 
 
 	}
